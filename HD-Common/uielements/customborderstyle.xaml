@@ -1,0 +1,94 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Common="clr-namespace:BlueStacks.Common">
+	<Style
+		TargetType="{x:Type Border}"
+		x:Key="ShadowBorder">
+		<Setter
+			Property="BorderThickness"
+			Value="1" />
+		<Setter
+			Property="Margin"
+			Value="30" />
+		<Setter
+			Property="UIElement.SnapsToDevicePixels"
+			Value="True" />
+		<Setter
+			Property="RenderOptions.EdgeMode"
+			Value="Aliased" />
+		<Setter
+			Property="Border.CornerRadius"
+			Value="{Binding Path=CornerRadiusModel.[PreferenceDropDownRadius], Source={x:Static Common:BlueStacksUIBinding.Instance}}" />
+		<Setter
+			Property="UIElement.Effect">
+			<Setter.Value>
+				<DropShadowEffect
+					Direction="270"
+					ShadowDepth="3"
+					BlurRadius="12"
+					Opacity="0.35"
+					Color="{Binding Path=ColorModel.[PopupShadowColor], Source={x:Static Common:BlueStacksUIBinding.Instance}, Converter={Common:BrushToColorConvertor}}" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style
+		TargetType="{x:Type Border}"
+		x:Key="ShadowBorderForPopup">
+		<Setter
+			Property="BorderThickness"
+			Value="1" />
+		<Setter
+			Property="Margin"
+			Value="3" />
+		<Setter
+			Property="UIElement.SnapsToDevicePixels"
+			Value="True" />
+		<Setter
+			Property="RenderOptions.EdgeMode"
+			Value="Aliased" />
+		<Setter
+			Property="Border.CornerRadius"
+			Value="{Binding Path=CornerRadiusModel.[PreferenceDropDownRadius], Source={x:Static Common:BlueStacksUIBinding.Instance}}" />
+		<Setter
+			Property="UIElement.Effect">
+			<Setter.Value>
+				<DropShadowEffect
+					Direction="270"
+					ShadowDepth="3"
+					BlurRadius="3"
+					Opacity="0.35"
+					Color="{Binding Path=ColorModel.[PopupShadowColor], Source={x:Static Common:BlueStacksUIBinding.Instance}, Converter={Common:BrushToColorConvertor}}" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style
+		TargetType="{x:Type Border}"
+		x:Key="OuterBorder">
+		<Setter
+			Property="BorderThickness"
+			Value="1" />
+		<Setter
+			Property="Border.CornerRadius"
+			Value="{Binding Path=CornerRadiusModel.[PreferenceDropDownRadius], Source={x:Static Common:BlueStacksUIBinding.Instance}}" />
+		<Setter
+			Property="Background"
+			Value="{Binding Path=ColorModel.[ContextMenuItemBackgroundColor], Source={x:Static Common:BlueStacksUIBinding.Instance}}" />
+		<Setter
+			Property="BorderBrush"
+			Value="{Binding Path=ColorModel.[PopupBorderBrush], Source={x:Static Common:BlueStacksUIBinding.Instance}}" />
+	</Style>
+	<Style
+		TargetType="{x:Type Border}"
+		x:Key="MaskBorder">
+		<Setter
+			Property="UIElement.SnapsToDevicePixels"
+			Value="True" />
+		<Setter
+			Property="RenderOptions.EdgeMode"
+			Value="Aliased" />
+		<Setter
+			Property="Border.CornerRadius"
+			Value="{Binding Path=CornerRadiusModel.[PreferenceDropDownRadius], Source={x:Static Common:BlueStacksUIBinding.Instance}}" />
+		<Setter
+			Property="Background"
+			Value="{Binding Path=ColorModel.[ContextMenuItemBackgroundColor], Source={x:Static Common:BlueStacksUIBinding.Instance}}" />
+	</Style>
+</ResourceDictionary>

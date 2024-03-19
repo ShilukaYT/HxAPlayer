@@ -1,0 +1,194 @@
+<Common:CustomWindow
+	x:Class="BlueStacks.MicroInstaller.StrippedMessageWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Common="clr-namespace:BlueStacks.Common" xmlns:local="clr-namespace:BlueStacks.MicroInstaller"
+	ShowInTaskbar="False"
+	ResizeMode="NoResize"
+	WindowStartupLocation="CenterOwner"
+	SizeToContent="WidthAndHeight"
+	WindowStyle="None"
+	Background="#00FFFFFF"
+	Title="BlueStacks"
+	AllowsTransparency="True"
+	DataContext="{Binding Source={x:Static local:BlueStacksUIBinding.Instance}}">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<Style
+				TargetType="{x:Type Hyperlink}"
+				x:Key="HyperlinkStyle">
+				<Style.Triggers>
+					<Trigger
+						Property="ContentElement.IsMouseOver"
+						Value="True">
+						<Setter
+							Property="Inline.TextDecorations"
+							Value="Underline" />
+					</Trigger>
+				</Style.Triggers>
+				<Setter
+					Property="Foreground"
+					Value="{Binding Path=ColorModel.[GuidanceKeyTextboxSelectedBorder], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+				<Setter
+					Property="Inline.TextDecorations"
+					Value="{x:Null}" />
+			</Style>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<Border
+		Name="mBorder"
+		BorderThickness="1"
+		SnapsToDevicePixels="True"
+		Margin="30"
+		RenderOptions.EdgeMode="Aliased"
+		CornerRadius="0">
+		<UIElement.Effect>
+			<DropShadowEffect
+				Direction="270"
+				ShadowDepth="3"
+				BlurRadius="12"
+				Opacity="0.35"
+				Color="{Binding Path=ColorModel.[PopupShadowColor], Source={x:Static local:BlueStacksUIBinding.Instance}, Converter={Common:BrushToColorConvertor}}" />
+		</UIElement.Effect>
+		<Grid>
+			<Border
+				BorderThickness="1"
+				CornerRadius="0"
+				Background="{Binding Path=ColorModel.[ContextMenuItemBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}"
+				BorderBrush="{Binding Path=ColorModel.[PopupBorderBrush], Source={x:Static local:BlueStacksUIBinding.Instance}}">
+				<Grid>
+					<UIElement.OpacityMask>
+						<VisualBrush
+							Stretch="None"
+							Visual="{Binding ElementName=mMaskBorder}" />
+					</UIElement.OpacityMask>
+					<Border
+						Name="mMaskBorder"
+						SnapsToDevicePixels="True"
+						RenderOptions.EdgeMode="Aliased"
+						CornerRadius="0"
+						Background="{Binding Path=ColorModel.[ContextMenuItemBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+					<Grid
+						Name="mParentGrid">
+						<Grid.RowDefinitions>
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="15" />
+							<RowDefinition
+								Height="*" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="20" />
+							<ColumnDefinition
+								Width="*" />
+							<ColumnDefinition
+								Width="20" />
+						</Grid.ColumnDefinitions>
+						<Grid
+							Name="mTextBlockGrid"
+							Row="0"
+							Column="1"
+							Margin="0,15,0,0"
+							MaxWidth="340">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="Auto" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="Auto" />
+								<ColumnDefinition
+									Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<local:CustomPictureBox
+								Name="mTitleIcon"
+								Grid.Column="0"
+								Visibility="Collapsed"
+								Width="20"
+								Margin="0,0,10,0" />
+							<TextBlock
+								Name="mTitleText"
+								Grid.Column="1"
+								Text="BlueStacks"
+								TextTrimming="CharacterEllipsis"
+								FontWeight="SemiBold"
+								FontSize="18"
+								Margin="0,0,10,0"
+								Foreground="{Binding Path=ColorModel.[ContextMenuItemForegroundColor]}" />
+							<local:CustomPictureBox
+								Name="mCustomMessageBoxMinimizeButton"
+								PreviewMouseLeftButtonUp="Minimize_PreviewMouseLeftButtonUp"
+								Grid.Column="2"
+								Margin="0,0,5,0"
+								Visibility="Collapsed"
+								Height="20"
+								Width="20"
+								ToolTip="Minimize"
+								ImageName="minimize_progress" />
+							<local:CustomPictureBox
+								Name="mCustomMessageBoxCloseButton"
+								PreviewMouseLeftButtonUp="Close_PreviewMouseLeftButtonUp"
+								Grid.Column="3"
+								Height="20"
+								Width="20"
+								ToolTip="Close"
+								ImageName="exit_close" />
+						</Grid>
+						<Grid
+							Row="2"
+							Column="1">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition
+										Height="Auto" />
+									<RowDefinition
+										Height="Auto" />
+									<RowDefinition
+										Height="20" />
+								</Grid.RowDefinitions>
+								<Grid>
+									<StackPanel
+										Name="mBodyTextStackPanel"
+										HorizontalAlignment="Left"
+										Orientation="Vertical"
+										MaxWidth="340">
+										<TextBlock
+											Name="mBodyTextBlock"
+											HorizontalAlignment="Left"
+											FontSize="16"
+											FontWeight="Regular"
+											TextWrapping="Wrap"
+											Visibility="Visible"
+											Margin="0,0,0,10"
+											Text="VT-x/AMD-v Hardware acceleration is available on your computer, but it is not turned enabled."
+											Foreground="{Binding Path=ColorModel.[ContextMenuItemForegroundDimColor]}" />
+										<TextBlock
+											Name="mUrlTextBlock"
+											Visibility="Collapsed"
+											HorizontalAlignment="Left"
+											FontSize="16"
+											FontWeight="Regular"
+											TextWrapping="Wrap"
+											Margin="0,0,0,10">
+											<Hyperlink
+												Name="mUrlLink"
+												Style="{StaticResource HyperlinkStyle}"
+												FontSize="14" />
+										</TextBlock>
+									</StackPanel>
+								</Grid>
+								<StackPanel
+									Name="mButtonsStackPanel"
+									Grid.Row="1"
+									Margin="0,10,0,0"
+									HorizontalAlignment="Right"
+									Height="36"
+									Orientation="Horizontal"
+									FlowDirection="RightToLeft" />
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Border>
+		</Grid>
+	</Border>
+</Common:CustomWindow>

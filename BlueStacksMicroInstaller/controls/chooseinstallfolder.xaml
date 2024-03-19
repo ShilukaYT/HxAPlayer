@@ -1,0 +1,196 @@
+<UserControl
+	x:Class="BlueStacks.MicroInstaller.ChooseInstallFolder" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:BlueStacks.MicroInstaller"
+	DataContext="{Binding Source={x:Static local:BlueStacksUIBinding.Instance}}"
+	Background="{Binding Path=ColorModel.[InstallerWindowBackground]}">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="2.5*" />
+			<ColumnDefinition
+				Width="5*" />
+			<ColumnDefinition
+				Width="2.5*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height=".9*" />
+			<RowDefinition
+				Height="1*" />
+			<RowDefinition
+				Height=".9*" />
+		</Grid.RowDefinitions>
+		<Label
+			Name="mDataPathLabel"
+			Content="BlueStacks Data Path"
+			Grid.Row="0"
+			Grid.Column="1"
+			Margin="3,0,0,0"
+			FontSize="12"
+			Foreground="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+		<StackPanel
+			Orientation="Horizontal"
+			Grid.Row="1"
+			Grid.Column="1"
+			VerticalAlignment="Center">
+			<TextBox
+				Name="mBluestacksDataLocation"
+				Margin="5,5,0,5"
+				VerticalAlignment="Center"
+				BorderThickness="0"
+				Grid.Column="0"
+				IsReadOnly="True"
+				Width="240"
+				FontSize="12"
+				Foreground="{Binding Path=ColorModel.[TextBoxForegroundColor]}"
+				Background="{Binding Path=ColorModel.[TextBoxBackgroundColor]}" />
+			<local:CustomPictureBox
+				Name="mChooseFolderButton"
+				Margin="5,0,0,5"
+				ImageName="setpath"
+				Height="15"
+				Width="15"
+				VerticalAlignment="Center" />
+			<Label
+				Name="mChooseFolderLabel"
+				Content="Folders"
+				Margin="5,0,0,5"
+				VerticalAlignment="Center"
+				FontSize="10"
+				Foreground="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}">
+				<FrameworkElement.Style>
+					<Style
+						TargetType="{x:Type Label}">
+						<Setter
+							Property="Foreground"
+							Value="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+						<Style.Triggers>
+							<Trigger
+								Property="UIElement.IsMouseOver"
+								Value="True">
+								<Setter
+									Property="Foreground"
+									Value="{Binding Path=ColorModel.[InstallerWindowMouseOverTextForeground]}" />
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</FrameworkElement.Style>
+			</Label>
+		</StackPanel>
+		<StackPanel
+			Grid.Column="1"
+			Grid.Row="2"
+			Orientation="Horizontal"
+			Margin="0,0,0,0"
+			VerticalAlignment="Top">
+			<Label
+				Name="mSpaceRequiredLabel"
+				Content="Space Required"
+				FontSize="12"
+				Foreground="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+			<Label
+				Content="2048MB"
+				Foreground="#FFFFFFFF"
+				FontSize="12" />
+			<Label
+				Name="mSpaceAvailableLabel"
+				HorizontalAlignment="Right"
+				Content="Space Available"
+				FontSize="12"
+				Foreground="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+			<Label
+				Name="mSpaceAvailable"
+				HorizontalAlignment="Right"
+				FontSize="12"
+				Foreground="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+		</StackPanel>
+		<StackPanel
+			Grid.ColumnSpan="2"
+			Grid.Row="0"
+			Grid.RowSpan="3"
+			Orientation="Vertical"
+			Grid.Column="2"
+			HorizontalAlignment="Right"
+			Margin="10">
+			<StackPanel
+				Grid.Column="2"
+				Orientation="Vertical"
+				VerticalAlignment="Top"
+				HorizontalAlignment="Right"
+				Height="81.316">
+				<StackPanel
+					Orientation="Horizontal"
+					VerticalAlignment="Center"
+					Margin="0,10,10,0">
+					<local:CustomPictureBox
+						Name="mInstallNowButton"
+						Panel.ZIndex="4"
+						ImageName="custom"
+						Height="15"
+						Width="15"
+						VerticalAlignment="Center" />
+					<Label
+						Name="mInstallNowLabel"
+						Content="Install Now"
+						MaxWidth="122"
+						MaxHeight="25"
+						FontSize="12"
+						Margin="5,0,0,0">
+						<FrameworkElement.Style>
+							<Style
+								TargetType="{x:Type Label}">
+								<Setter
+									Property="Foreground"
+									Value="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+								<Style.Triggers>
+									<Trigger
+										Property="UIElement.IsMouseOver"
+										Value="True">
+										<Setter
+											Property="Foreground"
+											Value="{Binding Path=ColorModel.[InstallerWindowTextForeground]}" />
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</FrameworkElement.Style>
+					</Label>
+				</StackPanel>
+				<StackPanel
+					Orientation="Horizontal"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Center"
+					Margin="0,0,15,15">
+					<local:CustomPictureBox
+						Name="mBackButton"
+						ImageName="backicon"
+						Height="10"
+						Width="10"
+						VerticalAlignment="Center" />
+					<Label
+						Name="mBackButtonLabel"
+						Content="Back"
+						FontSize="12"
+						HorizontalAlignment="Right"
+						Margin="5,0,0,0">
+						<FrameworkElement.Style>
+							<Style
+								TargetType="{x:Type Label}">
+								<Setter
+									Property="Foreground"
+									Value="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+								<Style.Triggers>
+									<Trigger
+										Property="UIElement.IsMouseOver"
+										Value="True">
+										<Setter
+											Property="Foreground"
+											Value="{Binding Path=ColorModel.[InstallerWindowTextForeground]}" />
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</FrameworkElement.Style>
+					</Label>
+				</StackPanel>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</UserControl>

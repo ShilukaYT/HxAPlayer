@@ -1,0 +1,320 @@
+<Button
+	x:Class="BlueStacks.Common.CustomButton" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:BlueStacks.Common"
+	Name="mButton"
+	Style="{DynamicResource ButtonStyle}"
+	Content="Hello World"
+	PreviewMouseDown="Button_PreviewMouseDown"
+	PreviewMouseUp="Button_PreviewMouseUp">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<local:ButtonColorMultiConverter
+				x:Key="ButtonColorMultiConverter" />
+			<local:ButtonCornerRadiusMultiConverter
+				x:Key="ButtonCornerRadiusMultiConverter" />
+			<local:ButtonImageNameToVisibilityConverter
+				x:Key="ButtonImageNameToVisibilityConverter" />
+			<local:ButtonImageStateConverter
+				x:Key="ButtonImageStateConverter" />
+			<Style
+				TargetType="{x:Type Button}"
+				x:Key="ButtonStyle">
+				<Setter
+					Property="UIElement.SnapsToDevicePixels"
+					Value="True" />
+				<Setter
+					Property="FrameworkElement.OverridesDefaultStyle"
+					Value="True" />
+				<Setter
+					Property="FrameworkElement.FocusVisualStyle"
+					Value="{x:Null}" />
+				<Setter
+					Property="BorderThickness"
+					Value="1" />
+				<Setter
+					Property="Padding"
+					Value="10,0,10,0" />
+				<Setter
+					Property="FontSize"
+					Value="16" />
+				<Setter
+					Property="FontWeight"
+					Value="SemiBold" />
+				<Setter
+					Property="Height"
+					Value="35" />
+				<Setter
+					Property="FrameworkElement.ToolTip"
+					Value="{Binding Path=Content, RelativeSource={RelativeSource Self}}" />
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate
+							TargetType="{x:Type local:CustomButton}">
+							<Border
+								Name="Border"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								Padding="{TemplateBinding Padding}">
+								<Border.BorderBrush>
+									<MultiBinding
+										ConverterParameter="{x:Static local:ButtonColorType.MouseOut_BorderBackground}"
+										Converter="{StaticResource ButtonColorMultiConverter}">
+										<Binding
+											Path="ButtonColor"
+											RelativeSource="{RelativeSource TemplatedParent}" />
+										<Binding
+											Path="ColorModel"
+											Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+									</MultiBinding>
+								</Border.BorderBrush>
+								<Border.Background>
+									<MultiBinding
+										ConverterParameter="{x:Static local:ButtonColorType.MouseOut_GridBackGround}"
+										Converter="{StaticResource ButtonColorMultiConverter}">
+										<Binding
+											Path="ButtonColor"
+											RelativeSource="{RelativeSource TemplatedParent}" />
+										<Binding
+											Path="ColorModel"
+											Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+									</MultiBinding>
+								</Border.Background>
+								<TextBlock.Foreground>
+									<MultiBinding
+										ConverterParameter="{x:Static local:ButtonColorType.MouseOut_ForeGround}"
+										Converter="{StaticResource ButtonColorMultiConverter}">
+										<Binding
+											Path="ButtonColor"
+											RelativeSource="{RelativeSource TemplatedParent}" />
+										<Binding
+											Path="ColorModel"
+											Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+									</MultiBinding>
+								</TextBlock.Foreground>
+								<Border.CornerRadius>
+									<MultiBinding
+										Converter="{StaticResource ButtonCornerRadiusMultiConverter}">
+										<Binding
+											Path="CornerRadiusModel.[ButtonCornerRadius]"
+											Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+										<Binding
+											Path="ActualHeight"
+											RelativeSource="{RelativeSource TemplatedParent}" />
+									</MultiBinding>
+								</Border.CornerRadius>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition
+											Width="Auto" />
+										<ColumnDefinition
+											Width="*" />
+										<ColumnDefinition
+											Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<local:CustomPictureBox
+										Name="mButtonImage"
+										Stretch="Uniform"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Center"
+										Grid.Column="0"
+										Margin="{Binding ImageMargin, RelativeSource={RelativeSource TemplatedParent}}"
+										Visibility="{Binding ImageName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ButtonImageNameToVisibilityConverter}}"
+										ImageName="{Binding ImageName, RelativeSource={RelativeSource TemplatedParent}}" />
+									<ContentPresenter
+										Grid.Column="1"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										RecognizesAccessKey="True">
+										<ContentPresenter.ContentTemplate>
+											<DataTemplate>
+												<!--Unknown connection ID: 2-->
+												<TextBlock
+													Name="buttonTextBlock"
+													Margin="0,-2,0,0"
+													TextTrimming="CharacterEllipsis"
+													Text="{Binding}" />
+											</DataTemplate>
+										</ContentPresenter.ContentTemplate>
+									</ContentPresenter>
+								</Grid>
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger
+									Property="IsEnabled"
+									Value="False">
+									<Setter
+										TargetName="Border"
+										Property="BorderBrush">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.Disabled_BorderBackground}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="Border"
+										Property="Background">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.Disabled_GridBackGround}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="Border"
+										Property="Foreground">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.Disabled_ForeGround}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+								<Trigger
+									Property="UIElement.IsMouseOver"
+									Value="True">
+									<Setter
+										TargetName="Border"
+										Property="BorderBrush">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.MouseIn_BorderBackground}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="Border"
+										Property="Background">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.MouseIn_GridBackGround}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="Border"
+										Property="Foreground">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.MouseIn_ForeGround}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="mButtonImage"
+										Property="local:CustomPictureBox.ImageName"
+										Value="{Binding ImageName, ConverterParameter={x:Static local:ButtonImageState.hover}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ButtonImageStateConverter}}" />
+								</Trigger>
+								<Trigger
+									Property="local:CustomButton.IsMouseDown"
+									Value="True">
+									<Setter
+										TargetName="Border"
+										Property="BorderBrush">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.MouseDown_BorderBackground}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="Border"
+										Property="Background">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.MouseDown_GridBackGround}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="Border"
+										Property="Foreground">
+										<Setter.Value>
+											<MultiBinding
+												ConverterParameter="{x:Static local:ButtonColorType.MouseDown_ForeGround}"
+												Converter="{StaticResource ButtonColorMultiConverter}">
+												<Binding
+													Path="ButtonColor"
+													RelativeSource="{RelativeSource TemplatedParent}" />
+												<Binding
+													Path="ColorModel"
+													Source="{x:Static local:BlueStacksUIBinding.Instance}" />
+											</MultiBinding>
+										</Setter.Value>
+									</Setter>
+									<Setter
+										TargetName="mButtonImage"
+										Property="local:CustomPictureBox.ImageName"
+										Value="{Binding ImageName, ConverterParameter={x:Static local:ButtonImageState.click}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ButtonImageStateConverter}}" />
+								</Trigger>
+								<Trigger
+									Property="local:CustomButton.ImageOrder"
+									Value="AfterText">
+									<Setter
+										TargetName="mButtonImage"
+										Property="Column"
+										Value="2" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+</Button>

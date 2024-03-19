@@ -1,0 +1,865 @@
+<ComboBox
+	x:Class="BlueStacks.Common.CustomComboBox" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:BlueStacks.Common" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+	Style="{DynamicResource ComboBoxStyle1}"
+	ItemContainerStyle="{DynamicResource comboboxitemstyle}">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<Style
+				x:Key="ComboBoxFocusVisual">
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Rectangle
+								Margin="4,4,21,4"
+								SnapsToDevicePixels="True"
+								StrokeThickness="1"
+								StrokeDashArray="1 2"
+								Stroke="{Binding Path=ColorModel.[ComboBoxItemBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Geometry
+				x:Key="DownArrowGeometry">M 0 0 L 4 5 L 8 0 Z</Geometry>
+			<Style
+				TargetType="{x:Type ToggleButton}"
+				x:Key="ComboBoxReadonlyToggleButton">
+				<Setter
+					Property="FrameworkElement.OverridesDefaultStyle"
+					Value="True" />
+				<Setter
+					Property="IsTabStop"
+					Value="False" />
+				<Setter
+					Property="Focusable"
+					Value="False" />
+				<Setter
+					Property="ButtonBase.ClickMode"
+					Value="Press" />
+				<Setter
+					Property="Background"
+					Value="#00FFFFFF" />
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate
+							TargetType="{x:Type ToggleButton}">
+							<Border
+								Name="Chrome"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								SnapsToDevicePixels="True"
+								Background="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}">
+								<Grid
+									HorizontalAlignment="Right">
+									<Path
+										Name="Arrow"
+										HorizontalAlignment="Center"
+										Margin="3,1,12,0"
+										VerticalAlignment="Center"
+										Data="{StaticResource DownArrowGeometry}"
+										Fill="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+								</Grid>
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger
+									Property="IsEnabled"
+									Value="False">
+									<Setter
+										TargetName="Arrow"
+										Property="Fill"
+										Value="#AFAFAF" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Style
+				TargetType="{x:Type TextBox}"
+				x:Key="ComboBoxEditableTextBox">
+				<Setter
+					Property="FrameworkElement.OverridesDefaultStyle"
+					Value="True" />
+				<Setter
+					Property="UIElement.AllowDrop"
+					Value="True" />
+				<Setter
+					Property="MinWidth"
+					Value="0" />
+				<Setter
+					Property="MinHeight"
+					Value="0" />
+				<Setter
+					Property="FrameworkElement.FocusVisualStyle"
+					Value="{x:Null}" />
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate
+							TargetType="{x:Type TextBox}">
+							<ScrollViewer
+								Name="PART_ContentHost"
+								Focusable="False"
+								HorizontalScrollBarVisibility="Hidden"
+								VerticalScrollBarVisibility="Hidden"
+								Background="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Style
+				TargetType="{x:Type ToggleButton}"
+				x:Key="ComboBoxToggleButton">
+				<Setter
+					Property="FrameworkElement.OverridesDefaultStyle"
+					Value="True" />
+				<Setter
+					Property="IsTabStop"
+					Value="False" />
+				<Setter
+					Property="Focusable"
+					Value="False" />
+				<Setter
+					Property="ButtonBase.ClickMode"
+					Value="Press" />
+				<Setter
+					Property="Background"
+					Value="#00FFFFFF" />
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate
+							TargetType="{x:Type ToggleButton}">
+							<Border
+								Name="Chrome"
+								BorderThickness="0"
+								SnapsToDevicePixels="True"
+								BorderBrush="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}"
+								Background="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}">
+								<Grid
+									HorizontalAlignment="Right">
+									<Path
+										Name="Arrow"
+										HorizontalAlignment="Center"
+										Margin="3,1,12,0"
+										VerticalAlignment="Center"
+										Data="{StaticResource DownArrowGeometry}"
+										Fill="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+								</Grid>
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger
+									Property="IsEnabled"
+									Value="False">
+									<Setter
+										TargetName="Arrow"
+										Property="Fill"
+										Value="#AFAFAF" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<ControlTemplate
+				TargetType="{x:Type ComboBox}"
+				x:Key="ComboBoxEditableTemplate">
+				<Border
+					BorderThickness="1"
+					BorderBrush="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}">
+					<Grid
+						Name="Placement"
+						SnapsToDevicePixels="True">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="*" />
+							<ColumnDefinition
+								Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<Popup
+							Name="PART_Popup"
+							AllowsTransparency="True"
+							Grid.ColumnSpan="2"
+							PopupAnimation="{DynamicResource SystemParameters.ComboBoxPopupAnimationKey}"
+							Placement="Bottom"
+							IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+							<Themes:SystemDropShadowChrome
+								Name="Shdw"
+								Color="Transparent"
+								MaxHeight="{TemplateBinding MaxDropDownHeight}"
+								MinWidth="{Binding ActualWidth, ElementName=Placement}">
+								<Border
+									Name="DropDownBorder"
+									BorderThickness="1"
+									BorderBrush="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}"
+									Background="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}">
+									<ScrollViewer>
+										<ItemsPresenter
+											KeyboardNavigation.DirectionalNavigation="Contained"
+											SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+									</ScrollViewer>
+								</Border>
+							</Themes:SystemDropShadowChrome>
+						</Popup>
+						<Themes:ListBoxChrome
+							Name="Border"
+							BorderThickness="0"
+							Grid.ColumnSpan="2"
+							RenderMouseOver="{TemplateBinding IsMouseOver}"
+							RenderFocused="{TemplateBinding IsKeyboardFocusWithin}"
+							BorderBrush="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}"
+							Background="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+						<TextBox
+							Name="PART_EditableTextBox"
+							HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+							Margin="{TemplateBinding Padding}"
+							VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+							Style="{StaticResource ComboBoxEditableTextBox}"
+							IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" />
+						<ToggleButton
+							Visibility="Collapsed"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							Background="{TemplateBinding Background}"
+							Grid.Column="1"
+							Style="{StaticResource ComboBoxToggleButton}"
+							IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+					</Grid>
+				</Border>
+				<ControlTemplate.Triggers>
+					<Trigger
+						Property="UIElement.IsKeyboardFocusWithin"
+						Value="True">
+						<Setter
+							Property="Foreground"
+							Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+					</Trigger>
+					<Trigger
+						Property="ComboBox.IsDropDownOpen"
+						Value="True">
+						<Setter
+							TargetName="Border"
+							Property="Themes:ListBoxChrome.RenderFocused"
+							Value="True" />
+					</Trigger>
+					<Trigger
+						Property="ItemsControl.HasItems"
+						Value="False">
+						<Setter
+							TargetName="DropDownBorder"
+							Property="Height"
+							Value="95" />
+					</Trigger>
+					<Trigger
+						Property="IsEnabled"
+						Value="False">
+						<Setter
+							Property="Foreground"
+							Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+						<Setter
+							Property="Background"
+							Value="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+					</Trigger>
+					<Trigger
+						Property="ItemsControl.IsGrouping"
+						Value="True">
+						<Setter
+							Property="CanContentScroll"
+							Value="False" />
+					</Trigger>
+					<Trigger
+						SourceName="PART_Popup"
+						Property="Popup.HasDropShadow"
+						Value="True">
+						<Setter
+							TargetName="Shdw"
+							Property="Margin"
+							Value="0,0,5,5" />
+						<Setter
+							TargetName="Shdw"
+							Property="Themes:SystemDropShadowChrome.Color"
+							Value="#000000" />
+					</Trigger>
+				</ControlTemplate.Triggers>
+			</ControlTemplate>
+			<Style
+				TargetType="{x:Type local:CustomComboBox}"
+				x:Key="ComboBoxStyle1">
+				<Setter
+					Property="FrameworkElement.FocusVisualStyle"
+					Value="{StaticResource ComboBoxFocusVisual}" />
+				<Setter
+					Property="Foreground"
+					Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+				<Setter
+					Property="Background"
+					Value="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+				<Setter
+					Property="BorderThickness"
+					Value="1" />
+				<Setter
+					Property="HorizontalScrollBarVisibility"
+					Value="Auto" />
+				<Setter
+					Property="VerticalScrollBarVisibility"
+					Value="Auto" />
+				<Setter
+					Property="Padding"
+					Value="4,3" />
+				<Setter
+					Property="local:CustomComboBox.SetToolTip"
+					Value="{Binding Path=IsMouseOver, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+				<Setter
+					Property="FrameworkElement.ToolTip"
+					Value="{Binding Path=SelectedItem.ToolTip, RelativeSource={RelativeSource Self}}" />
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate
+							TargetType="{x:Type local:CustomComboBox}">
+							<Grid
+								Name="MainGrid"
+								SnapsToDevicePixels="True">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition
+										Width="*" />
+									<ColumnDefinition
+										MinWidth="{DynamicResource SystemParameters.VerticalScrollBarWidthKey}"
+										Width="0" />
+								</Grid.ColumnDefinitions>
+								<Popup
+									Name="PART_Popup"
+									AllowsTransparency="True"
+									Grid.ColumnSpan="2"
+									Margin="1"
+									PopupAnimation="{DynamicResource SystemParameters.ComboBoxPopupAnimationKey}"
+									Placement="Bottom"
+									IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+									<Themes:SystemDropShadowChrome
+										Name="Shdw"
+										Color="Transparent"
+										MaxHeight="{TemplateBinding MaxDropDownHeight}"
+										MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+										<Border
+											Name="DropDownBorder"
+											BorderThickness="1,0,1,1"
+											BorderBrush="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}"
+											Background="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}">
+											<ScrollViewer
+												CanContentScroll="True"
+												HorizontalScrollBarVisibility="Disabled"
+												Template="{DynamicResource ScrollViewerControlTemplate1}">
+												<ItemsPresenter
+													KeyboardNavigation.DirectionalNavigation="Contained"
+													Margin="-1,0,-1,0"
+													MaxWidth="{TemplateBinding Width}"
+													SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+											</ScrollViewer>
+										</Border>
+									</Themes:SystemDropShadowChrome>
+								</Popup>
+								<ToggleButton
+									Name="TglBtn"
+									Background="{TemplateBinding Background}"
+									Grid.ColumnSpan="2"
+									BorderThickness="1"
+									Style="{StaticResource ComboBoxReadonlyToggleButton}"
+									BorderBrush="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}"
+									IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+								<ContentPresenter
+									ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+									ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+									Content="{TemplateBinding SelectionBoxItem}"
+									ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+									HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+									IsHitTestVisible="False"
+									Margin="8,4,8,4"
+									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+									VerticalAlignment="Center" />
+							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger
+									SourceName="PART_Popup"
+									Property="Popup.HasDropShadow"
+									Value="True">
+									<Setter
+										TargetName="Shdw"
+										Property="Margin"
+										Value="0,0,0,0" />
+									<Setter
+										TargetName="Shdw"
+										Property="Themes:SystemDropShadowChrome.Color"
+										Value="#71000000" />
+								</Trigger>
+								<Trigger
+									Property="ItemsControl.HasItems"
+									Value="False">
+									<Setter
+										TargetName="DropDownBorder"
+										Property="Height"
+										Value="95" />
+								</Trigger>
+								<Trigger
+									Property="IsEnabled"
+									Value="False">
+									<Setter
+										Property="Foreground"
+										Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+									<Setter
+										Property="Background"
+										Value="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+								</Trigger>
+								<Trigger
+									Property="ItemsControl.IsGrouping"
+									Value="True">
+									<Setter
+										Property="CanContentScroll"
+										Value="False" />
+								</Trigger>
+								<Trigger
+									Property="BorderBrush"
+									Value="#FFFF0000">
+									<Setter
+										TargetName="TglBtn"
+										Property="BorderBrush"
+										Value="#FF402F" />
+								</Trigger>
+								<Trigger
+									Property="local:CustomComboBox.Highlight"
+									Value="True">
+									<Setter
+										TargetName="TglBtn"
+										Property="BorderBrush"
+										Value="{Binding Path=ColorModel.[SettingsWindowTabMenuItemUnderline], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+									<Setter
+										TargetName="TglBtn"
+										Property="BorderThickness"
+										Value="2" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Style.Triggers>
+					<Trigger
+						Property="ComboBox.IsEditable"
+						Value="True">
+						<Setter
+							Property="BorderBrush"
+							Value="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+						<Setter
+							Property="Background"
+							Value="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+						<Setter
+							Property="IsTabStop"
+							Value="False" />
+						<Setter
+							Property="Padding"
+							Value="3" />
+						<Setter
+							Property="Template"
+							Value="{StaticResource ComboBoxEditableTemplate}" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<!--Unknown connection ID: 1-->
+			<Style
+				TargetType="{x:Type ComboBoxItem}"
+				x:Key="comboboxitemstyle">
+				<Setter
+					Property="HorizontalContentAlignment"
+					Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+				<Setter
+					Property="VerticalContentAlignment"
+					Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+				<Setter
+					Property="Padding"
+					Value="3,0,3,0" />
+				<Setter
+					Property="Foreground"
+					Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+				<Setter
+					Property="Background"
+					Value="{Binding Path=ColorModel.[ComboBoxBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+				<Setter
+					Property="MaxWidth"
+					Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" />
+				<Setter
+					Property="MinWidth"
+					Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" />
+				<Setter
+					Property="MaxHeight"
+					Value="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" />
+				<Setter
+					Property="MinHeight"
+					Value="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" />
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate
+							TargetType="{x:Type ComboBoxItem}">
+							<Border
+								Name="Bd"
+								Background="#00FFFFFF"
+								Padding="{TemplateBinding Padding}"
+								SnapsToDevicePixels="True"
+								BorderBrush="{Binding Path=ColorModel.[ComboBoxBorderColor], Source={x:Static local:BlueStacksUIBinding.Instance}}">
+								<ContentPresenter
+									Name="mContentPresenter"
+									Margin="4,4,4,4"
+									HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+									VerticalAlignment="Center" />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger
+									Property="ComboBoxItem.IsHighlighted"
+									Value="True">
+									<Setter
+										TargetName="Bd"
+										Property="Background"
+										Value="{Binding Path=ColorModel.[ComboBoxItemBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+									<Setter
+										Property="Foreground"
+										Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+								</Trigger>
+								<Trigger
+									Property="IsEnabled"
+									Value="False">
+									<Setter
+										Property="Foreground"
+										Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<ControlTemplate
+				TargetType="{x:Type ScrollViewer}"
+				x:Key="ScrollViewerControlTemplate1">
+				<Grid
+					Name="Grid"
+					Background="{TemplateBinding Background}">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="*" />
+						<RowDefinition
+							Height="Auto" />
+					</Grid.RowDefinitions>
+					<Rectangle
+						Name="Corner"
+						Grid.Column="1"
+						Fill="{DynamicResource SystemColors.ControlBrushKey}"
+						Grid.Row="1" />
+					<ScrollContentPresenter
+						Name="PART_ScrollContentPresenter"
+						CanContentScroll="{TemplateBinding CanContentScroll}"
+						CanHorizontallyScroll="False"
+						CanVerticallyScroll="False"
+						ContentTemplate="{TemplateBinding ContentTemplate}"
+						Content="{TemplateBinding Content}"
+						Grid.Column="0"
+						Margin="{TemplateBinding Padding}"
+						Grid.Row="0" />
+					<ScrollBar
+						Name="PART_VerticalScrollBar"
+						HorizontalAlignment="Right"
+						AutomationProperties.AutomationId="VerticalScrollBar"
+						Cursor="Arrow"
+						Grid.Column="1"
+						Maximum="{TemplateBinding ScrollableHeight}"
+						Minimum="0"
+						Grid.Row="0"
+						Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+						ViewportSize="{TemplateBinding ViewportHeight}"
+						Style="{DynamicResource ScrollBarStyle1}"
+						Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+						<FrameworkElement.Resources>
+							<ResourceDictionary>
+								<SolidColorBrush
+									x:Key="ScrollBarDisabledBackground"
+									Color="{Binding Path=ColorModel.[ComboBoxItemBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+								<Style
+									x:Key="ScrollBarButton"
+									TargetType="{x:Type RepeatButton}">
+									<Setter
+										Property="FrameworkElement.OverridesDefaultStyle"
+										Value="True" />
+									<Setter
+										Property="Focusable"
+										Value="False" />
+									<Setter
+										Property="IsTabStop"
+										Value="False" />
+									<Setter
+										Property="Template">
+										<Setter.Value>
+											<ControlTemplate
+												TargetType="{x:Type RepeatButton}">
+												<Themes:ScrollChrome
+													Name="Chrome"
+													RenderMouseOver="{TemplateBinding IsMouseOver}"
+													RenderPressed="{TemplateBinding IsPressed}"
+													SnapsToDevicePixels="True"
+													ScrollGlyph="{TemplateBinding ScrollGlyph}" />
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+								<Style
+									x:Key="VerticalScrollBarPageButton"
+									TargetType="{x:Type RepeatButton}">
+									<Setter
+										Property="FrameworkElement.OverridesDefaultStyle"
+										Value="True" />
+									<Setter
+										Property="Background"
+										Value="#00FFFFFF" />
+									<Setter
+										Property="Focusable"
+										Value="False" />
+									<Setter
+										Property="IsTabStop"
+										Value="False" />
+									<Setter
+										Property="Template">
+										<Setter.Value>
+											<ControlTemplate
+												TargetType="{x:Type RepeatButton}">
+												<Rectangle
+													Fill="{TemplateBinding Background}"
+													Height="{TemplateBinding Height}"
+													Width="{TemplateBinding Width}" />
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+								<Style
+									x:Key="ScrollBarThumb"
+									TargetType="{x:Type Thumb}">
+									<Setter
+										Property="FrameworkElement.OverridesDefaultStyle"
+										Value="True" />
+									<Setter
+										Property="IsTabStop"
+										Value="False" />
+									<Setter
+										Property="Template">
+										<Setter.Value>
+											<ControlTemplate
+												TargetType="{x:Type Thumb}">
+												<Grid
+													Width="8"
+													HorizontalAlignment="Right"
+													Background="{Binding Path=ColorModel.[ComboBoxScrollBarColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+								<Style
+									x:Key="HorizontalScrollBarPageButton"
+									TargetType="{x:Type RepeatButton}">
+									<Setter
+										Property="FrameworkElement.OverridesDefaultStyle"
+										Value="True" />
+									<Setter
+										Property="Background"
+										Value="#00FFFFFF" />
+									<Setter
+										Property="Focusable"
+										Value="False" />
+									<Setter
+										Property="IsTabStop"
+										Value="False" />
+									<Setter
+										Property="Template">
+										<Setter.Value>
+											<ControlTemplate
+												TargetType="{x:Type RepeatButton}">
+												<Rectangle
+													Fill="{TemplateBinding Background}"
+													Height="{TemplateBinding Height}"
+													Width="{TemplateBinding Width}" />
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+								<Style
+									x:Key="ScrollBarStyle1"
+									TargetType="{x:Type ScrollBar}">
+									<Setter
+										Property="Background"
+										Value="{Binding Path=ColorModel.[ComboBoxVerticalScrollBarBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+									<Setter
+										Property="Stylus.IsPressAndHoldEnabled"
+										Value="False" />
+									<Setter
+										Property="Stylus.IsFlicksEnabled"
+										Value="False" />
+									<Setter
+										Property="Foreground"
+										Value="{Binding Path=ColorModel.[ComboBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+									<Setter
+										Property="Width"
+										Value="{DynamicResource SystemParameters.VerticalScrollBarWidthKey}" />
+									<Setter
+										Property="MinWidth"
+										Value="{DynamicResource SystemParameters.VerticalScrollBarWidthKey}" />
+									<Setter
+										Property="Template">
+										<Setter.Value>
+											<ControlTemplate
+												TargetType="{x:Type ScrollBar}">
+												<Grid
+													Name="Bg"
+													Background="#00FFFFFF"
+													SnapsToDevicePixels="True">
+													<Grid.RowDefinitions>
+														<RowDefinition
+															Height="0.00001*" />
+													</Grid.RowDefinitions>
+													<Track
+														Name="PART_Track"
+														IsDirectionReversed="True"
+														IsEnabled="{TemplateBinding IsMouseOver}"
+														Grid.Row="1">
+														<Track.DecreaseRepeatButton>
+															<RepeatButton
+																Command="{x:Static ScrollBar.PageUpCommand}"
+																Style="{StaticResource VerticalScrollBarPageButton}" />
+														</Track.DecreaseRepeatButton>
+														<Track.IncreaseRepeatButton>
+															<RepeatButton
+																Command="{x:Static ScrollBar.PageDownCommand}"
+																Style="{StaticResource VerticalScrollBarPageButton}" />
+														</Track.IncreaseRepeatButton>
+														<Track.Thumb>
+															<Thumb
+																Themes:ScrollChrome.ScrollGlyph="VerticalGripper"
+																Style="{StaticResource ScrollBarThumb}" />
+														</Track.Thumb>
+													</Track>
+												</Grid>
+												<ControlTemplate.Triggers>
+													<Trigger
+														Property="IsEnabled"
+														Value="False">
+														<Setter
+															TargetName="Bg"
+															Property="Background"
+															Value="{StaticResource ScrollBarDisabledBackground}" />
+													</Trigger>
+												</ControlTemplate.Triggers>
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+									<Style.Triggers>
+										<Trigger
+											Property="ScrollBar.Orientation"
+											Value="Horizontal">
+											<Setter
+												Property="Width"
+												Value="Auto" />
+											<Setter
+												Property="MinWidth"
+												Value="0" />
+											<Setter
+												Property="Height"
+												Value="{DynamicResource SystemParameters.HorizontalScrollBarHeightKey}" />
+											<Setter
+												Property="MinHeight"
+												Value="{DynamicResource SystemParameters.HorizontalScrollBarHeightKey}" />
+											<Setter
+												Property="Background"
+												Value="{Binding Path=ColorModel.[ComboBoxHorizontalScrollBarBackgroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+											<Setter
+												Property="Template">
+												<Setter.Value>
+													<ControlTemplate
+														TargetType="{x:Type ScrollBar}">
+														<Grid
+															Name="Bg"
+															Background="{TemplateBinding Background}"
+															SnapsToDevicePixels="True">
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition
+																	MaxWidth="{DynamicResource SystemParameters.HorizontalScrollBarButtonWidthKey}" />
+																<ColumnDefinition
+																	Width="0.00001*" />
+																<ColumnDefinition
+																	MaxWidth="{DynamicResource SystemParameters.HorizontalScrollBarButtonWidthKey}" />
+															</Grid.ColumnDefinitions>
+															<RepeatButton
+																Command="{x:Static ScrollBar.LineLeftCommand}"
+																IsEnabled="{TemplateBinding IsMouseOver}"
+																Themes:ScrollChrome.ScrollGlyph="LeftArrow"
+																Style="{StaticResource ScrollBarButton}" />
+															<Track
+																Name="PART_Track"
+																Grid.Column="1"
+																IsEnabled="{TemplateBinding IsMouseOver}">
+																<Track.DecreaseRepeatButton>
+																	<RepeatButton
+																		Command="{x:Static ScrollBar.PageLeftCommand}"
+																		Style="{StaticResource HorizontalScrollBarPageButton}" />
+																</Track.DecreaseRepeatButton>
+																<Track.IncreaseRepeatButton>
+																	<RepeatButton
+																		Command="{x:Static ScrollBar.PageRightCommand}"
+																		Style="{StaticResource HorizontalScrollBarPageButton}" />
+																</Track.IncreaseRepeatButton>
+																<Track.Thumb>
+																	<Thumb
+																		Themes:ScrollChrome.ScrollGlyph="HorizontalGripper"
+																		Style="{StaticResource ScrollBarThumb}" />
+																</Track.Thumb>
+															</Track>
+															<RepeatButton
+																Grid.Column="2"
+																Command="{x:Static ScrollBar.LineRightCommand}"
+																IsEnabled="{TemplateBinding IsMouseOver}"
+																Themes:ScrollChrome.ScrollGlyph="RightArrow"
+																Style="{StaticResource ScrollBarButton}" />
+														</Grid>
+														<ControlTemplate.Triggers>
+															<Trigger
+																Property="IsEnabled"
+																Value="False">
+																<Setter
+																	TargetName="Bg"
+																	Property="Background"
+																	Value="{StaticResource ScrollBarDisabledBackground}" />
+															</Trigger>
+														</ControlTemplate.Triggers>
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</ResourceDictionary>
+						</FrameworkElement.Resources>
+					</ScrollBar>
+					<ScrollBar
+						Name="PART_HorizontalScrollBar"
+						AutomationProperties.AutomationId="HorizontalScrollBar"
+						Cursor="Arrow"
+						Grid.Column="0"
+						Maximum="{TemplateBinding ScrollableWidth}"
+						Minimum="0"
+						Orientation="Horizontal"
+						Grid.Row="1"
+						Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+						ViewportSize="{TemplateBinding ViewportWidth}"
+						Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+				</Grid>
+			</ControlTemplate>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+</ComboBox>

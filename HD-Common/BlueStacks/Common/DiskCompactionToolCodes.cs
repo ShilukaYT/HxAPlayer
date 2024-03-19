@@ -1,0 +1,29 @@
+﻿using System;
+
+namespace BlueStacks.Common
+{
+	// Token: 0x02000235 RID: 565
+	public enum DiskCompactionToolCodes
+	{
+		// Token: 0x04000D8D RID: 3469
+		SUCCESS,
+		// Token: 0x04000D8E RID: 3470
+		VERSION_NOT_SUPPORTED = -1,
+		// Token: 0x04000D8F RID: 3471
+		SOME_ERROR_WHILE_MERGING = -2,
+		// Token: 0x04000D90 RID: 3472
+		UNHANDLED_EXCEPTION = -3,
+		// Token: 0x04000D91 RID: 3473
+		VIRTUAL_BOX_INIT_FAILED = -4,
+		// Token: 0x04000D92 RID: 3474
+		ERROR_IN_MERGING_DISK = -5,
+		// Token: 0x04000D93 RID: 3475
+		GUEST_NOT_BOOTED_FOR_RUNNING_ADB_COMMANDS = -6,
+		// Token: 0x04000D94 RID: 3476
+		UNABLE_TO_FREE_DISK = -7,
+		// Token: 0x04000D95 RID: 3477
+		VBOX_ERROR_IN_FINAL_COMPACTION = -8,
+		// Token: 0x04000D96 RID: 3478
+		VM_DONT_EXIST = -9
+	}
+}

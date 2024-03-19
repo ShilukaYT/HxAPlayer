@@ -1,0 +1,63 @@
+<TextBlock
+	x:Class="BlueStacks.Common.CustomTextBlock" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:BlueStacks.Common">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<Style
+				TargetType="{x:Type local:CustomTextBlock}"
+				x:Key="{x:Type local:CustomTextBlock}">
+				<Setter
+					Property="TextTrimming"
+					Value="CharacterEllipsis" />
+				<Setter
+					Property="FrameworkElement.FocusVisualStyle"
+					Value="{x:Null}" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Center" />
+				<Setter
+					Property="HorizontalAlignment"
+					Value="Left" />
+				<Setter
+					Property="Foreground"
+					Value="{Binding Path=ColorModel.[TextBoxForegroundColor], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+				<Setter
+					Property="Background"
+					Value="#00FFFFFF" />
+				<Setter
+					Property="local:CustomTextBlock.SetToolTip"
+					Value="{Binding Path=IsMouseOver, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+				<Style.Triggers>
+					<MultiTrigger>
+						<MultiTrigger.Conditions>
+							<Condition
+								Property="local:CustomTextBlock.HoverForegroundProperty"
+								Value="True" />
+							<Condition
+								Property="UIElement.IsMouseOver"
+								Value="True" />
+						</MultiTrigger.Conditions>
+						<MultiTrigger.Setters>
+							<Setter
+								Property="Foreground"
+								Value="{Binding Path=ColorModel.[DualTextBlockForeground], Source={x:Static local:BlueStacksUIBinding.Instance}}" />
+						</MultiTrigger.Setters>
+					</MultiTrigger>
+					<Trigger
+						Property="IsEnabled"
+						Value="True">
+						<Setter
+							Property="UIElement.Opacity"
+							Value="1" />
+					</Trigger>
+					<Trigger
+						Property="IsEnabled"
+						Value="False">
+						<Setter
+							Property="UIElement.Opacity"
+							Value="0.5" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+</TextBlock>

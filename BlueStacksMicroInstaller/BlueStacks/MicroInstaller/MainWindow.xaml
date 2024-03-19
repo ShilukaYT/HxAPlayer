@@ -1,0 +1,117 @@
+<Window
+	x:Class="BlueStacks.MicroInstaller.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:BlueStacks.MicroInstaller"
+	ResizeMode="NoResize"
+	WindowStyle="None"
+	Background="#00FFFFFF"
+	WindowStartupLocation="CenterScreen"
+	Height="440"
+	Width="660"
+	DataContext="{Binding Source={x:Static local:BlueStacksUIBinding.Instance}}"
+	Closing="Installer_Closing">
+	<Border
+		BorderThickness="0.5"
+		BorderBrush="{Binding Path=ColorModel.[InstallerWindowBorderBrush]}">
+		<UIElement.Effect>
+			<DropShadowEffect
+				BlurRadius="1"
+				ShadowDepth="1" />
+		</UIElement.Effect>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="8*" />
+				<RowDefinition
+					Height="1.8*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="1*" />
+				<ColumnDefinition
+					Width="2*" />
+				<ColumnDefinition
+					Width="1*" />
+			</Grid.ColumnDefinitions>
+			<Image
+				Name="mInstallerBackgroundImage"
+				Grid.ColumnSpan="3"
+				Grid.RowSpan="2"
+				Stretch="UniformToFill"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center" />
+			<TextBlock
+				Name="mAppNameInstallingText"
+				Grid.Row="0"
+				Grid.ColumnSpan="3"
+				Margin="15,10,0,0"
+				Text="Installing PUBG"
+				FontSize="16"
+				FontWeight="SemiBold"
+				Visibility="Hidden"
+				Foreground="{Binding Path=ColorModel.[InstallerWindowWhiteTextColor]}" />
+			<TextBlock
+				Name="mInstallerText"
+				Grid.ColumnSpan="3"
+				Grid.Row="0"
+				Margin="0,0,0,5"
+				VerticalAlignment="Bottom"
+				FontSize="12"
+				HorizontalAlignment="Center"
+				Text="© Bluestack Systems, Inc., 2020, All Rights Reserved Worldwide"
+				Foreground="{Binding Path=ColorModel.[InstallerWindowLightTextForeground]}" />
+			<StackPanel
+				Name="mInstallerCloseMinimizePanel"
+				Grid.Row="0"
+				Grid.Column="2"
+				Orientation="Horizontal"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Top">
+				<local:CustomPictureBox
+					Name="mMinimizeButton"
+					MouseLeftButtonUp="MMinimizeButton_MouseLeftButtonUp"
+					ImageName="installer_minimize"
+					Height="15"
+					Width="15"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Left"
+					Grid.Row="0"
+					Margin="10,20,5,10" />
+				<local:CustomPictureBox
+					Name="mCloseButton"
+					MouseLeftButtonUp="MCloseButton_MouseLeftButtonUp"
+					ImageName="close_red"
+					Height="15"
+					Width="15"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Left"
+					Grid.Row="0"
+					Margin="10,20,20,10" />
+			</StackPanel>
+			<local:CustomPictureBox
+				Name="mProductLogo"
+				Panel.ZIndex="2"
+				Grid.Row="1"
+				Grid.Column="0"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Left"
+				Margin="20"
+				ImageName="Assets\installer_logo.png" />
+			<local:StartInstall
+				Name="mStartInstall"
+				Grid.Row="1"
+				Grid.ColumnSpan="3"
+				Panel.ZIndex="1" />
+			<local:InstallProgress
+				Name="mInstallProgress"
+				Grid.Row="1"
+				Grid.ColumnSpan="3"
+				Panel.ZIndex="1"
+				Visibility="Hidden" />
+			<local:ChooseInstallFolder
+				Name="mChooseInstallFolder"
+				Grid.Row="1"
+				Grid.ColumnSpan="3"
+				Panel.ZIndex="1"
+				Visibility="Hidden" />
+		</Grid>
+	</Border>
+</Window>
